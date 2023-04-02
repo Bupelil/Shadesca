@@ -1,0 +1,19 @@
+static void Main(string[] args)
+{
+    var fileContent = File.ReadAllBytes(@"C:\Library.dll");
+
+    var assembly = Assembly.Load(fileContent);
+
+    // Call the method of the library using reflection
+    assembly
+        ?.GetType("Library.LibraryClass")
+        ?.GetMethod("PrintPath", BindingFlags.Public | BindingFlags.Static)
+        ?.Invoke(null, null);
+
+    Console.WriteLine("Hello from Application:");
+    Console.WriteLine($"GetViaAssemblyCodeBase: {GetViaAssemblyCodeBase(assembly)}");
+    Console.WriteLine($"GetViaAssemblyLocation: {assembly.Location}");
+    Console.WriteLine($"GetViaAppDomain       : {AppDomain.CurrentDomain.BaseDirectory}");
+
+    Console.ReadLine();
+}
